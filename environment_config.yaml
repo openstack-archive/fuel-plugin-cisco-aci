@@ -1,0 +1,115 @@
+attributes:
+  install_type:
+    type: "radio"
+    weight: 20
+    value: "apic"
+    label: "Cisco SDN install type"
+    values:
+      - data: "apic"
+        label: "Generic APIC ML2 driver"
+        description: "Core Cisco ML2 Neutron plugin"
+      - data: "gbp"
+        label: "GBP module and Mapping driver"
+        description: "Description ...."
+      - data: "apic_with_gbp"
+        label: "GBP module and APIC driver"
+        description: "Description ..."
+  apic_hosts:
+    value: '10.0.0.100'
+    label: 'APIC Host'
+    description: 'Comma­separated list of Cisco APIC IP addresses'
+    weight: 31
+    type: "text"
+  apic_username:
+    value: 'admin'
+    label: 'APIC Username'
+    description: 'Username for Cisco APIC; usually admin is used to allow configuration for multiple tenants'
+    weight: 32
+    type: "text"
+    regex:
+      source: '\S'
+      error: "Error field cannot be empty"
+  apic_password:
+    value: 'password'
+    label: 'APIC Password'
+    description: 'Password for the Cisco APIC user identified by the username'
+    weight: 33
+    type: "password"
+    regex:
+      source: '\S'
+      error: "Error field cannot be empty"
+  use_lldp:
+    type: "checkbox"
+    weight: 40
+    value: true
+    label: "Use lldp"
+    description: "Try to automatically discover hosts"
+    restrictions:
+        #- condition: "settings:cisco_aci.install_type.value != \"apic\""
+        # action: disable
+  static_config:
+    type: "textarea"
+    weight: 41
+    value: ""
+    label: "Static config"
+    description: "Example:\n[apic_switch:201]\ncompute11,compute21=1/10\ncompute12=1/11\n"
+    restrictions:
+        - condition: "settings:cisco_aci.use_lldp.value != false"
+          action: disable
+  additional_config:
+    type: "textarea"
+    weight: 42
+    value: ""
+    label: "Additional config"
+    description: "Example:\n[DEFAULT]\napic_vpc_pairs=201:202,203:204"
+  create_ext_net:
+    type: "checkbox"
+    weight: 70
+    value: false
+    label: "Configure external network"
+    description: "Create external neutron network"
+  ext_net_name:
+    type: "text"
+    weight: 71
+    value: "myextnet"
+    label: "Network name:"
+    description: "External network name"
+    restrictions:
+        - condition: "settings:cisco_aci.create_ext_net.value == false"
+          action: hide
+  ext_net_subnet:
+    type: "text"
+    weight: 72
+    value: "10.0.0.0/24"
+    label: "Subnet range:"
+    description: "CIDR for external network"
+    restrictions:
+        - condition: "settings:cisco_aci.create_ext_net.value == false"
+          action: hide
+  ext_net_gateway:
+    type: "text"
+    weight: 73
+    value: "10.0.0.1"
+    label: "Gateway IP:"
+    description: "IP address of the external gateway"
+    restrictions:
+        - condition: "settings:cisco_aci.create_ext_net.value == false"
+          action: hide
+  ext_net_switch:
+    type: "text"
+    weight: 74
+    value: "203"
+    label: "Switch ID:"
+    description: "Switch ID from Cisco APIC"
+    restrictions:
+        - condition: "settings:cisco_aci.create_ext_net.value == false"
+          action: hide
+  ext_net_port:
+    type: "text"
+    weight: 75
+    value: "1/34"
+    label: "Port ID:"
+    description: "Switch port to which the external router is connected"
+    restrictions:
+        - condition: "settings:cisco_aci.create_ext_net.value == false"
+          action: hide
