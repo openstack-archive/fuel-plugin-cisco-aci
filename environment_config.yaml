@@ -1,73 +1,109 @@
 attributes:
-  install_type:
+  use_gbp:
+    type: "checkbox"
+    weight: 30
+    value: false
+    label: "Group-Based Policy"
+    description: "Enable/Disable Group-Based Policy installation"
+    restrictions:
+      - condition: "not (cluster:net_provider == 'neutron' and (networking_parameters:segmentation_type == 'vlan' or networking_parameters:segmentation_type == 'gre'))"
+        action: disable
+  use_apic:
+    type: "checkbox"
+    weight: 31
+    value: false
+    label: "APIC Driver"
+    description: "Enable/Disable APIC API Controller"
+    restrictions:
+      - condition: "not (cluster:net_provider == 'neutron' and networking_parameters:segmentation_type == 'vlan')"
+        action: disable
+  driver_type:
     type: "radio"
-    weight: 20
-    value: "apic"
-    label: "Cisco SDN install type"
+    weight: 33
+    value: "ML2"
+    label: "APIC Driver mode"
+    restrictions:
+      - condition: "settings:cisco_aci.use_apic.value != true"
+        action: disable
     values:
-      - data: "apic"
-        label: "Generic APIC ML2 driver"
-        description: "Core Cisco ML2 Neutron plugin"
-      - data: "gbp"
-        label: "GBP module and Mapping driver"
-        description: "Description ...."
-      - data: "apic_with_gbp"
-        label: "GBP module and APIC driver"
-        description: "Description ..."
+      - data: "ML2"
+        label: "ML2"
+        description: "ML2 Driver"
+      - data: "GBP"
+        label: "GBP"
+        description: "Group-Based Policy Driver"
+        restrictions:
+          - condition: "settings:cisco_aci.use_gbp.value != true"
+            action: disable
   apic_hosts:
     value: '10.0.0.100'
     label: 'APIC Host'
     description: 'Comma­separated list of Cisco APIC IP addresses'
-    weight: 31
+    weight: 41
     type: "text"
+    restrictions:
+      - condition: "settings:cisco_aci.use_apic.value != true"
+        action: disable
   apic_username:
     value: 'admin'
     label: 'APIC Username'
     description: 'Username for Cisco APIC; usually admin is used to allow configuration for multiple tenants'
-    weight: 32
+    weight: 42
     type: "text"
     regex:
       source: '\S'
       error: "Error field cannot be empty"
+    restrictions:
+      - condition: "settings:cisco_aci.use_apic.value != true"
+        action: disable
   apic_password:
     value: 'password'
     label: 'APIC Password'
     description: 'Password for the Cisco APIC user identified by the username'
-    weight: 33
+    weight: 43
     type: "password"
     regex:
       source: '\S'
       error: "Error field cannot be empty"
+    restrictions:
+      - condition: "settings:cisco_aci.use_apic.value != true"
+        action: disable
   use_lldp:
     type: "checkbox"
-    weight: 40
-    value: true
+    weight: 50
+    value: false
     label: "Use lldp"
     description: "Try to automatically discover hosts"
     restrictions:
-        #- condition: "settings:cisco_aci.install_type.value != \"apic\""
-        # action: disable
+      - condition: "settings:cisco_aci.use_apic.value != true"
+        action: disable
   static_config:
     type: "textarea"
-    weight: 41
+    weight: 51
     value: ""
     label: "Static config"
     description: "Example:\n[apic_switch:201]\ncompute11,compute21=1/10\ncompute12=1/11\n"
     restrictions:
-        - condition: "settings:cisco_aci.use_lldp.value != false"
-          action: disable
+      - condition: "settings:cisco_aci.use_lldp.value != false or settings:cisco_aci.use_apic.value != true"
+        action: disable
   additional_config:
     type: "textarea"
-    weight: 42
+    weight: 52
     value: ""
     label: "Additional config"
     description: "Example:\n[DEFAULT]\napic_vpc_pairs=201:202,203:204"
-  create_ext_net:
+    restrictions:
+      - condition: "settings:cisco_aci.use_apic.value != true"
+        action: disable
+  ext_net_enable:
     type: "checkbox"
     weight: 70
     value: false
     label: "Configure external network"
     description: "Create external neutron network"
+    restrictions:
+      - condition: "settings:cisco_aci.use_apic.value != true"
+        action: disable
   ext_net_name:
     type: "text"
     weight: 71
@@ -75,7 +111,7 @@ attributes:
     label: "Network name:"
     description: "External network name"
     restrictions:
-        - condition: "settings:cisco_aci.create_ext_net.value == false"
+        - condition: "settings:cisco_aci.ext_net_enable.value == false"
           action: hide
   ext_net_subnet:
     type: "text"
@@ -84,7 +120,7 @@ attributes:
     label: "Subnet range:"
     description: "CIDR for external network"
     restrictions:
-        - condition: "settings:cisco_aci.create_ext_net.value == false"
+        - condition: "settings:cisco_aci.ext_net_enable.value == false"
           action: hide
   ext_net_gateway:
     type: "text"
@@ -93,7 +129,7 @@ attributes:
     label: "Gateway IP:"
     description: "IP address of the external gateway"
     restrictions:
-        - condition: "settings:cisco_aci.create_ext_net.value == false"
+        - condition: "settings:cisco_aci.ext_net_enable.value == false"
           action: hide
   ext_net_switch:
     type: "text"
@@ -102,7 +138,7 @@ attributes:
     label: "Switch ID:"
     description: "Switch ID from Cisco APIC"
     restrictions:
-        - condition: "settings:cisco_aci.create_ext_net.value == false"
+        - condition: "settings:cisco_aci.ext_net_enable.value == false"
           action: hide
   ext_net_port:
     type: "text"
@@ -111,5 +147,5 @@ attributes:
     label: "Port ID:"
     description: "Switch port to which the external router is connected"
     restrictions:
-        - condition: "settings:cisco_aci.create_ext_net.value == false"
+        - condition: "settings:cisco_aci.ext_net_enable.value == false"
           action: hide
