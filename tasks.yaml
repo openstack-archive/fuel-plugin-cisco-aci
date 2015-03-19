@@ -2,10 +2,10 @@
 # here you can also specify several roles, for example
 # ['cinder', 'compute'] will be applied only on
 # cinder and compute nodes
-- role: ['controller','compute']
+- role: ['primary-controller','controller','compute']
   stage: post_deployment
   type: puppet
   parameters:
     puppet_manifest: puppet/site.pp
     puppet_modules: puppet/modules/
-    timeout: 42
+    timeout: 3600

@@ -1,0 +1,13 @@
+#!/bin/bash
+set -eux
+ROOT="$(dirname `readlink -f $0`)"
+MODULES="${ROOT}"/deployment_scripts/puppet/modules
+mkdir -p "${MODULES}"
+#REPO_PATH='https://github.com/stackforge/fuel-library/tarball/aded04f6b5d4dbc4b4e4cf904fc882879184d097'
+REPO_PATH='https://api.github.com/repos/stackforge/fuel-library/tarball/a478b8c6180af33612b19d09785bd63f2b6673c6'
+RPM_REPO="${ROOT}"/repositories/centos/
+DEB_REPO="${ROOT}"/repositories/ubuntu/
+
+wget -qO- "${REPO_PATH}" | \
+    tar -C "${MODULES}" --strip-components=3 -zxvf - \
+    stackforge-fuel-library-a478b8c/deployment/puppet/{inifile,stdlib,pacemaker}

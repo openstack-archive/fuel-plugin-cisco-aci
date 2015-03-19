@@ -1,21 +1,35 @@
 # Plugin name
 name: cisco_aci
 # Human-readable name for your plugin
-title: Cisco APIC Plugin support
+title: Cisco APIC Plugin
 # Plugin version
-version: 1.0.0
+version: 1.0.1
 # Description
 description: Enable to use Cisco SDN solutions for Neutron
 # Required fuel version
-fuel_version: ['6.0']
+fuel_version: ['6.1']
+# Specify license of your plugin
+licenses: ['Apache License Version 2.0']
+# Specify author or company name
+authors: ['Mirantis']
+# A link to the plugin's page
+homepage: 'https://github.com/noironetworks/fuel-plugin-cisco-aci'
+# Specify a group which your plugin implements, possible options:
+# # network, storage, storage::cinder, storage::glance, hypervisor
+groups: ['network']
 
 # The plugin is compatible with releases in the list
 releases:
+  - os: centos
+    version: 2014.2-6.1
+    mode: ['ha', 'multinode']
+    deployment_scripts_path: deployment_scripts/
+    repository_path: repositories/ubuntu
   - os: ubuntu
-    version: 2014.2-6.0
+    version: 2014.2-6.1
     mode: ['ha', 'multinode']
     deployment_scripts_path: deployment_scripts/
     repository_path: repositories/ubuntu
 
 # Version of plugin package
-package_version: '1.0.0'
+package_version: '2.0.0'

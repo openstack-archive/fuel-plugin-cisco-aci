@@ -1,0 +1,3 @@
+configs+=(
+    "/etc/neutron/plugins/ml2/ml2_conf_cisco.ini" \
+)
