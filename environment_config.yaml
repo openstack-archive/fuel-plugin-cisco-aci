@@ -1,4 +1,8 @@
 attributes:
+  metadata:
+    restrictions:
+      - condition: "not (cluster:net_provider == 'neutron' and networking_parameters:segmentation_type == 'vlan')"
+        action: hide
   use_gbp:
     type: "checkbox"
     weight: 30

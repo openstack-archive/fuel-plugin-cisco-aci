@@ -9,7 +9,7 @@ class horizon::params {
             $http_service   = 'httpd'
         }
         'Debian': {
-            $http_service       = 'apache2'
+            $http_service   = 'apache2'
         }
         default: {
             fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, module ${module_name} only support osfamily RedHat and Debian")

@@ -11,7 +11,20 @@ class gbp::horizon (
         name   => $::gbp::params::package_gbp_horizon,
     }
 
-    horizon::project{$enable_project:
-        project_dir  => $::gbp::params::gbp_horizon_project,
+    case $::osfamily {
+        'RedHat': {
+            include horizon::service
+            Package['gbp_horizon']  ~> Service['httpd']
+        }
+
+        'Debian': {
+            horizon::project{$enable_project:
+                project_dir  => $::gbp::params::gbp_horizon_project,
+            }
+        }
+
+        default: {
+            fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, module ${module_name} only support osfamily RedHat and Debian")
+        }
     }
 }

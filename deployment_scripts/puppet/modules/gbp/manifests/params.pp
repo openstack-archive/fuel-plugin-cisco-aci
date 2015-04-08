@@ -5,6 +5,11 @@ class gbp::params {
 
     case $::osfamily {
         'RedHat': {
+            $package_gbp_client     = 'python-gbpclient'
+            $package_gbp_manage     = 'openstack-neutron-gbp'
+            $package_gbp_heat       = 'openstack-heat-gbp'
+            $package_gbp_horizon    = 'openstack-dashboard-gbp'
+            $gbp_heat_plugin_path   = '/usr/lib/python2.6/site-packages/gbpautomation/heat'
         }
 
         'Debian': {
@@ -13,6 +18,7 @@ class gbp::params {
             $package_gbp_heat       = 'python-group-based-policy-automation'
             $package_gbp_horizon    = 'python-group-based-policy-ui'
             $gbp_horizon_project    = '/usr/lib/python2.7/dist-packages/gbpui'
+            $gbp_heat_plugin_path   = '/usr/lib/python2.7/site-packages/gbpautomation/heat'
         }
 
         default: {

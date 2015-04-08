@@ -19,7 +19,11 @@ class neutron::config_apic (
         'ml2_cisco_apic/apic_username':     value => $apic_username;
         'ml2_cisco_apic/apic_password':     value => $apic_password;
         'ml2_cisco_apic/apic_name_mapping': value => 'use_name' ;
-        'ml2_cisco_apic/root_helper':       value => 'sudo';
+    }
+    if $::osfamily == 'RedHat' {
+        neutron_plugin_ml2_cisco {
+            'ml2_cisco_apic/root_helper':   value => 'sudo';
+        }
     }
     if !empty($additional_config) {
         file_line{ 'additional_config':

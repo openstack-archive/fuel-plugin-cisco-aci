@@ -24,7 +24,7 @@ releases:
     version: 2014.2-6.1
     mode: ['ha', 'multinode']
     deployment_scripts_path: deployment_scripts/
-    repository_path: repositories/ubuntu
+    repository_path: repositories/centos
   - os: ubuntu
     version: 2014.2-6.1
     mode: ['ha', 'multinode']

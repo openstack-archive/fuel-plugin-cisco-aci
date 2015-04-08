@@ -12,7 +12,7 @@ class gbp::heat (
     }
 
     heat_config{
-        'DEFAULT/plugin_dirs'  : value => '/usr/lib/python2.7/dist-packages/gbpautomation/heat';
+        'DEFAULT/plugin_dirs'  : value => $::gbp::params::gbp_heat_plugin_path;
     }
 
 }
