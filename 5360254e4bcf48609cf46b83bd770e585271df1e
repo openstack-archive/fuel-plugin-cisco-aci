@@ -1,0 +1,8 @@
+Verified+2: Jenkins
+Code-Review+2: Nikita Koshikov <nkoshikov@mirantis.com>
+Workflow+1: Nikita Koshikov <nkoshikov@mirantis.com>
+Submitted-by: Jenkins
+Submitted-at: Thu, 09 Apr 2015 11:54:05 +0000
+Reviewed-on: https://review.openstack.org/172018
+Project: stackforge/fuel-plugin-cisco-aci
+Branch: refs/heads/master
