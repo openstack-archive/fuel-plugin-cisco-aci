@@ -4,8 +4,6 @@ class apic::params {
     $package_apic_api           = 'python-apicapi'
     $package_apic_svc           = 'neutron-driver-apic-svc'
     $package_apic_agent         = 'neutron-driver-apic-agent'
-    $service_apic_svc_agent     = 'neutron-apic-service-agent'
-    $service_apic_host_agent    = 'neutron-apic-host-agent'
 
     case $::osfamily {
         'RedHat': {
