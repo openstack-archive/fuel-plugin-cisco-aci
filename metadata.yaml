@@ -13,7 +13,7 @@ licenses: ['Apache License Version 2.0']
 # Specify author or company name
 authors: ['Mirantis']
 # A link to the plugin's page
-homepage: 'https://github.com/noironetworks/fuel-plugin-cisco-aci'
+homepage: 'https://github.com/stackforge/fuel-plugin-cisco-aci'
 # Specify a group which your plugin implements, possible options:
 # # network, storage, storage::cinder, storage::glance, hypervisor
 groups: ['network']
