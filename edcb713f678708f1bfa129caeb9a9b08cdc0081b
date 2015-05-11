@@ -1,0 +1,8 @@
+Code-Review+2: Sergey Levchenko <slevchenko@mirantis.com>
+Workflow+1: Sergey Levchenko <slevchenko@mirantis.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 11 May 2015 09:08:34 +0000
+Reviewed-on: https://review.openstack.org/181828
+Project: stackforge/fuel-plugin-cisco-aci
+Branch: refs/heads/master
