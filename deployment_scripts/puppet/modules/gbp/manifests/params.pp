@@ -13,10 +13,10 @@ class gbp::params {
         }
 
         'Debian': {
-            $package_gbp_client     = 'python-python-group-based-policy-client'
-            $package_gbp_manage     = 'python-group-based-policy'
-            $package_gbp_heat       = 'python-group-based-policy-automation'
-            $package_gbp_horizon    = 'python-group-based-policy-ui'
+            $package_gbp_client     = 'python-group-based-policy-client'
+            $package_gbp_manage     = 'group-based-policy'
+            $package_gbp_heat       = 'group-based-policy-automation'
+            $package_gbp_horizon    = 'group-based-policy-ui'
             $gbp_horizon_project    = '/usr/lib/python2.7/dist-packages/gbpui'
             $gbp_heat_plugin_path   = '/usr/lib/python2.7/site-packages/gbpautomation/heat'
         }
