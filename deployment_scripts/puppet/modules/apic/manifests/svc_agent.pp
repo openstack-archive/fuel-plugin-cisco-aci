@@ -4,6 +4,7 @@ class apic::svc_agent (
     $enabled        = true,
     $manage_service = true,
 ){
+    include apic::api
     include apic::params
 
     if $manage_service {
@@ -14,18 +15,13 @@ class apic::svc_agent (
         }
     }
 
-    Package['apic_svc_agent']       -> Neutron_config<||>
-    Package['apic_svc_agent']       -> Neutron_plugin_ml2<||>
-    Package['apic_svc_agent']       -> Neutron_plugin_ml2_cisco<||>
+    Package['apic_api']             -> Neutron_config<||>
+    Package['apic_api']             -> Neutron_plugin_ml2<||>
+    Package['apic_api']             -> Neutron_plugin_ml2_cisco<||>
     Neutron_config<||>              ~> Service['apic-svc-agent']
     Neutron_plugin_ml2<||>          ~> Service['apic-svc-agent']
     Neutron_plugin_ml2_cisco<||>    ~> Service['apic-svc-agent']
     File_line<||>                   ~> Service['apic-svc-agent']
-
-    package { 'apic_svc_agent':
-        ensure => $package_ensure,
-        name   => $::apic::params::package_apic_svc,
-    }
 
     service { 'apic-svc-agent':
         ensure     => $service_ensure,
@@ -33,7 +29,7 @@ class apic::svc_agent (
         enable     => $enabled,
         hasstatus  => true,
         hasrestart => true,
-        require    => Package['apic_svc_agent'],
+        require    => Package['apic_api'],
     }
 
 }

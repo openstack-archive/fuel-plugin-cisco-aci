@@ -3,6 +3,9 @@ $role               = hiera('role')
 $deployment_mode    = hiera('deployment_mode')
 $cisco_aci_hash     = hiera('cisco_aci',{})
 $access_hash        = hiera('access',{})
+$management_vip     = hiera('management_vip')
+$neutron_settings   = hiera('quantum_settings',{})
+
 
 $ha_prefix = $deployment_mode ? {
     'ha_compact'    => 'ha_',
@@ -35,6 +38,13 @@ if ($cisco_aci_hash['use_gbp'] == true and $cisco_aci_hash['use_apic'] == true){
         $install_type   = 'US3'
         $class_name     = 'gbp_and_apic_gbp'
     }
+}
+
+class {"cisco_aci::custom_configs":
+    role             => $role,
+    management_vip   => $management_vip,
+    n_passwd         => $neutron_settings['database']['passwd'],
+    r_timeout        => '60',
 }
 
 case $install_type {

@@ -2,8 +2,6 @@
 class apic::params {
 
     $package_apic_api           = 'apicapi'
-    $package_apic_svc           = 'apicapi'
-    $package_apic_agent         = 'apicapi'
 
     case $::osfamily {
         'RedHat': {
