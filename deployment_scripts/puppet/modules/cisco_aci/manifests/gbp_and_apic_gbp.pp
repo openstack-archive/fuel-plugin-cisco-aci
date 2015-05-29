@@ -20,6 +20,8 @@ class cisco_aci::gbp_and_apic_gbp (
     $ext_net_port       = '1/1',
     $ext_net_subnet     = '10.0.0.0/24',
     $ext_net_gateway    = '10.0.0.1',
+    $management_vip     = '',
+    $db_connection      = '',
 ){
     include 'apic::params'
     include 'apic::api'
@@ -70,6 +72,7 @@ class cisco_aci::gbp_and_apic_gbp (
     class {'neutron::config':
         service_plugins   => $service_plugins,
         mechanism_drivers => $mechanism_drivers,
+        db_connection     => $db_connection,
     }
 
     class {'neutron::config_apic':

@@ -3,6 +3,9 @@ $role               = hiera('role')
 $deployment_mode    = hiera('deployment_mode')
 $cisco_aci_hash     = hiera('cisco_aci',{})
 $access_hash        = hiera('access',{})
+$management_vip     = hiera('management_vip')
+$neutron_settings   = hiera('quantum_settings',{})
+$db_connection      = "mysql://neutron:${neutron_settings['database']['passwd']}@${management_vip}/neutron?&read_timeout=60"
 
 $ha_prefix = $deployment_mode ? {
     'ha_compact'    => 'ha_',
@@ -57,12 +60,14 @@ case $install_type {
             ext_net_port      => $cisco_aci_hash['ext_net_port'],
             ext_net_subnet    => $cisco_aci_hash['ext_net_subnet'],
             ext_net_gateway   => $cisco_aci_hash['ext_net_gateway'],
+            db_connection     => $db_connection,
         }
     }
     'US2a': {
         class {"cisco_aci::${class_name}":
-            ha_prefix => $ha_prefix,
-            role      => $role,
+            ha_prefix       => $ha_prefix,
+            role            => $role,
+            db_connection   => $db_connection,
         }
     }
     default: {

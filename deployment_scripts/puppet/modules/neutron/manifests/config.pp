@@ -3,11 +3,14 @@
 class neutron::config (
     $service_plugins    = 'neutron.services.l3_router.l3_router_plugin.L3RouterPlugin',
     $mechanism_drivers  = 'openvswitch',
+    $db_connection      = '',
+
 ){
 
     neutron_config {
         'DEFAULT/service_plugins':  value => $service_plugins;
         'DEFAULT/core_plugin':      value => 'neutron.plugins.ml2.plugin.Ml2Plugin';
+        'database/connection':      value => $db_connection;
     }
     neutron_plugin_ml2 {
         'ml2/type_drivers':                     value => 'local,flat,vlan,gre,vxlan';
