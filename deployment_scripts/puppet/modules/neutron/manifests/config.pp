@@ -3,11 +3,16 @@
 class neutron::config (
     $service_plugins    = 'neutron.services.l3_router.l3_router_plugin.L3RouterPlugin',
     $mechanism_drivers  = 'openvswitch',
+    $management_vip     = '',
+    $n_user             = 'neutron',
+    $n_passwd           = '',
+    $r_timeout          = '',
 ){
 
     neutron_config {
         'DEFAULT/service_plugins':  value => $service_plugins;
         'DEFAULT/core_plugin':      value => 'neutron.plugins.ml2.plugin.Ml2Plugin';
+	'database/connection':      value => "mysql://${n_user}:${n_passwd}@${management_vip}/neutron?&read_timeout=${r_timeout}";
     }
     neutron_plugin_ml2 {
         'ml2/type_drivers':                     value => 'local,flat,vlan,gre,vxlan';

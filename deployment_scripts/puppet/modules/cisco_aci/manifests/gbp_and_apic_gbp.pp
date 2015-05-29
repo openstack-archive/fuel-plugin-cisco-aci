@@ -20,6 +20,10 @@ class cisco_aci::gbp_and_apic_gbp (
     $ext_net_port       = '1/1',
     $ext_net_subnet     = '10.0.0.0/24',
     $ext_net_gateway    = '10.0.0.1',
+    $management_vip     = '',
+    $n_user             = 'neutron',
+    $n_passwd           = '',
+    $r_timeout          = '60',
 ){
     include 'apic::params'
     include 'apic::api'
@@ -70,6 +74,10 @@ class cisco_aci::gbp_and_apic_gbp (
     class {'neutron::config':
         service_plugins   => $service_plugins,
         mechanism_drivers => $mechanism_drivers,
+	management_vip    => $management_vip,
+	n_user            => $n_user,
+	n_passwd          => $n_passwd,
+	r_timeout         => $r_timeout,
     }
 
     class {'neutron::config_apic':
