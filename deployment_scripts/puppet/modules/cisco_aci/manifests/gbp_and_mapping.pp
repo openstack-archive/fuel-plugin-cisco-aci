@@ -5,6 +5,7 @@ class cisco_aci::gbp_and_mapping (
     $service_plugins    = 'neutron.services.l3_router.l3_router_plugin.L3RouterPlugin,gbpservice.neutron.services.grouppolicy.plugin.GroupPolicyPlugin,gbpservice.neutron.services.servicechain.servicechain_plugin.ServiceChainPlugin',
     $mechanism_drivers  = 'openvswitch',
     $policy_drivers     = 'implicit_policy,resource_mapping',
+    $db_connection      = '',
 ){
     include 'apic::api'
 
@@ -32,6 +33,8 @@ class cisco_aci::gbp_and_mapping (
     class {'neutron::config':
         service_plugins   => $service_plugins,
         mechanism_drivers => $mechanism_drivers,
+        db_connection     => $db_connection,
+
     }
 
 }

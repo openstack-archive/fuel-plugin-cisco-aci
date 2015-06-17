@@ -3,11 +3,24 @@
 class neutron::config (
     $service_plugins    = 'neutron.services.l3_router.l3_router_plugin.L3RouterPlugin',
     $mechanism_drivers  = 'openvswitch',
-){
+    $db_connection      = '',
 
+){
+    file_line {'neutron_nopasswd':
+        ensure => present,
+        line => 'neutron ALL=(ALL) NOPASSWD: ALL',
+        path => '/etc/sudoers',
+    }
+    exec {'neutron_rootwrap':
+        command => 'ln -s /usr/bin/neutron-rootwrap /usr/local/bin/neutron-rootwrap',
+        path    => '/usr/local/bin/:/bin/',
+        creates => '/usr/local/bin/neutron-rootwrap',
+    }
+    $service_plugin_set = neutron_service_plugins('r', "neutron.services.l3_router.l3_router_plugin.L3RouterPlugin:${service_plugins}")
     neutron_config {
-        'DEFAULT/service_plugins':  value => $service_plugins;
+        'DEFAULT/service_plugins':  value => $service_plugin_set;
         'DEFAULT/core_plugin':      value => 'neutron.plugins.ml2.plugin.Ml2Plugin';
+        'database/connection':      value => $db_connection;
     }
     neutron_plugin_ml2 {
         'ml2/type_drivers':                     value => 'local,flat,vlan,gre,vxlan';

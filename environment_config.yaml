@@ -90,15 +90,69 @@ attributes:
     restrictions:
       - condition: "settings:cisco_aci.use_lldp.value != false or settings:cisco_aci.use_apic.value != true"
         action: disable
-  additional_config:
-    type: "textarea"
-    weight: 52
-    value: ""
-    label: "Additional config"
-    description: "Example:\n[DEFAULT]\napic_vpc_pairs=201:202,203:204"
+  use_pre_existing_vpc:
+    type: "checkbox"
+    weight: 53
+    value: true
+    label: "Use pre-existing VPC links"
+    description: "Use pre-existing VPC configuration as configured in APIC"
     restrictions:
       - condition: "settings:cisco_aci.use_apic.value != true"
         action: disable
+  use_pre_existing_l3context:
+    type: "checkbox"
+    weight: 54
+    value: true
+    label: "Pre-existing shared l3context"
+    description: "Use pre-existing shared l3context"
+    restrictions:
+      - condition: "settings:cisco_aci.use_apic.value != true"
+        action: disable
+  shared_context_name:
+    type: "text"
+    weight: 55
+    value: "ehnet_shared"
+    label: "Shared context name:"
+    description: "Specify a text-field with the name of this l3-context which will then used as shared_context_name"
+    restrictions:
+        - condition: "settings:cisco_aci.use_pre_existing_l3context.value == false"
+          action: hide
+  apic_external_network:
+    type: "text"
+    weight: 56
+    value: "my_ext_net"
+    label: "APIC external network:"
+    description: "External network name, which will be used by APIC"
+    restrictions:
+        - condition: "settings:cisco_aci.ext_net_enable.value == true"
+          action: hide
+  pre_existing_external_network_on:
+    type: "checkbox"
+    weight: 57
+    value: true
+    label: "Use pre-existing external network"
+    description: "Use pre-existing external neutron network configured on APIC side"
+    restrictions:
+      - condition: "settings:cisco_aci.use_apic.value != true"
+        action: disable
+  apic_system_id:
+    type: "text"
+    weight: 58
+    value: "openstack1,apic_stack2"
+    label: "OpenStack system ID:"
+    description: "Commaseparated list of values"
+    restrictions:
+        - condition: "settings:cisco_aci.use_apic.value == false"
+          action: hide
+  external_epg:
+    type: "text"
+    weight: 59
+    value: "ext_epg"
+    label: "External EPG name:"
+    description: "APIC external EPG name"
+    restrictions:
+        - condition: "settings:cisco_aci.use_apic.value == false"
+          action: hide
   ext_net_enable:
     type: "checkbox"
     weight: 70
@@ -153,3 +207,12 @@ attributes:
     restrictions:
         - condition: "settings:cisco_aci.ext_net_enable.value == false"
           action: hide
+  additional_config:
+    type: "textarea"
+    weight: 76
+    value: ""
+    label: "Additional config"
+    description: "Example:\nml2_cisco_apic/apic_vpc_pairs=201:202,203:204"
+    restrictions:
+      - condition: "settings:cisco_aci.use_apic.value != true"
+        action: disable

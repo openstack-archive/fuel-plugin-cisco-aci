@@ -1,9 +1,10 @@
 #Class apic::params
 class apic::params {
 
-    $package_apic_api           = 'apicapi'
-    $package_apic_svc           = 'apicapi'
-    $package_apic_agent         = 'apicapi'
+    $package_apic_api                  = 'python-apicapi'
+    $package_apic_svc                  = 'python-apicapi'
+    $package_apic_agent                = 'python-apicapi'
+    $package_neutron_ml2_driver_apic   = 'neutron-ml2-driver-apic'
 
     case $::osfamily {
         'RedHat': {
@@ -12,8 +13,8 @@ class apic::params {
         }
 
         'Debian': {
-            $service_apic_svc_agent     = 'neutron-driver-apic-svc'
-            $service_apic_host_agent    = 'neutron-driver-apic-agent'
+            $service_apic_svc_agent     = 'neutron-cisco-apic-service-agent'
+            $service_apic_host_agent    = 'neutron-cisco-apic-host-agent'
         }
 
         default: {

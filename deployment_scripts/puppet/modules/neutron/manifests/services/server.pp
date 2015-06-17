@@ -29,7 +29,7 @@ class neutron::services::server (
         ensure     => $service_ensure,
         name       => $::neutron::params::service_neutron_server,
         enable     => $enabled,
-        hasstatus  => true,
-        hasrestart => true,
+        start      => '/usr/sbin/service neutron-server restart',
+        pattern    => '/usr/bin/neutron-server'
     }
 }

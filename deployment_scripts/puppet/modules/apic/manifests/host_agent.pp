@@ -3,8 +3,9 @@ class apic::host_agent (
     $package_ensure     = 'present',
     $enabled            = true,
     $manage_service     = true,
-){
+) {
     include apic::params
+    include apic::api
 
     if $manage_service {
         if $enabled {
@@ -14,9 +15,9 @@ class apic::host_agent (
         }
     }
 
-    package { 'apic_host_agent':
+    package { 'apic_ml2_driver':
         ensure => $package_ensure,
-        name   => $::apic::params::package_apic_agent,
+        name   => $::apic::params::package_neutron_ml2_driver_apic,
     }
 
     service { 'apic-host-agent':
@@ -25,15 +26,16 @@ class apic::host_agent (
         enable     => $enabled,
         hasstatus  => true,
         hasrestart => true,
-        require    => Package['apic_host_agent'],
+        require    => Package['apic_api'],
     }
 
-    Package['apic_host_agent']      -> Neutron_config<||>
-    Package['apic_host_agent']      -> Neutron_plugin_ml2<||>
-    Package['apic_host_agent']      -> Neutron_plugin_ml2_cisco<||>
-    Neutron_config<||>              ~> Service['apic-host-agent']
-    Neutron_plugin_ml2<||>          ~> Service['apic-host-agent']
-    Neutron_plugin_ml2_cisco<||>    ~> Service['apic-host-agent']
-    File_line<||>                   ~> Service['apic-host-agent']
+    Package['apic_api']            -> Package['apic_ml2_driver']
+    Package['apic_api']            -> Neutron_config<||>
+    Package['apic_api']            -> Neutron_plugin_ml2<||>
+    Package['apic_api']            -> Neutron_plugin_ml2_cisco<||>
+    Neutron_config<||>             ~> Service['apic-host-agent']
+    Neutron_plugin_ml2<||>         ~> Service['apic-host-agent']
+    Neutron_plugin_ml2_cisco<||>   ~> Service['apic-host-agent']
+    File_line<||>                  ~> Service['apic-host-agent']
 
 }
