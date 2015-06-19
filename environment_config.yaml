@@ -86,7 +86,7 @@ attributes:
     weight: 51
     value: ""
     label: "Static config"
-    description: "Example:\n[apic_switch:201]\ncompute11,compute21=1/10\ncompute12=1/11\n"
+    description: "Example:\napic_switch:201/compute11,compute21=1/10\napic_switch:201/compute12=1/11\n"
     restrictions:
       - condition: "settings:cisco_aci.use_lldp.value != false or settings:cisco_aci.use_apic.value != true"
         action: disable
