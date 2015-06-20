@@ -22,6 +22,7 @@ Puppet::Parser::Functions::newfunction(
             return plugin_string
         else
             notice("No replacemant target found #{rpl[0]}")
+            return rpl[1].to_s
         end
     elsif action == 'a'
         fail "Wrong arguments number for appending" if rpl.any?

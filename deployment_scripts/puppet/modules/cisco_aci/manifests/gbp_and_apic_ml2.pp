@@ -1,29 +1,41 @@
 #Class cisco_aci::gbp_and_apic_ml2
 class cisco_aci::gbp_and_apic_ml2 (
-    $ha_prefix          = '',
-    $role               = 'compute',
-    $use_lldp           = true,
-    $apic_hosts         = '10.0.0.1',
-    $apic_username      = 'admin',
-    $apic_password      = 'password',
-    $static_config      = '',
-    $additional_config  = '',
-    $service_plugins    = 'neutron.services.l3_router.l3_apic.ApicL3ServicePlugin',
-    $mechanism_drivers  = 'openvswitch,cisco_apic',
-    $policy_drivers     = 'implicit_policy,apic',
-    $admin_username     = 'admin',
-    $admin_password     = 'admin',
-    $admin_tenant       = 'admin',
-    $ext_net_enable     = false,
-    $ext_net_name       = 'ext',
-    $ext_net_switch     = '101',
-    $ext_net_port       = '1/1',
-    $ext_net_subnet     = '10.0.0.0/24',
-    $ext_net_gateway    = '10.0.0.1',
-    $db_connection      = '',
+    $ha_prefix                          = '',
+    $role                               = 'compute',
+    $use_lldp                           = true,
+    $apic_system_id                     = 'openstack',
+    $apic_hosts                         = '10.0.0.1',
+    $apic_username                      = 'admin',
+    $apic_password                      = 'password',
+    $static_config                      = '',
+    $additional_config                  = '',
+    $service_plugins                    = 'cisco_apic_l3,gbpservice.neutron.services.grouppolicy.plugin.GroupPolicyPlugin,gbpservice.neutron.services.servicechain.servicechain_plugin.ServiceChainPlugin',
+    $mechanism_drivers                  = 'openvswitch,cisco_apic_ml2',
+    $policy_drivers                     = 'implicit_policy,resource_mapping',
+    $admin_username                     = 'admin',
+    $admin_password                     = 'admin',
+    $admin_tenant                       = 'admin',
+    $ext_net_enable                     = false,
+    $ext_net_config                     = false,
+    $ext_net_name                       = 'ext',
+    $ext_net_switch                     = '101',
+    $ext_net_port                       = '1/1',
+    $ext_net_subnet                     = '10.0.0.0/24',
+    $ext_net_gateway                    = '10.0.0.1',
+    $db_connection                      = '',
+    $pre_existing_vpc                   = true,
+    $pre_existing_l3_context            = true,
+    $shared_context_name                = '',
+    $apic_external_network              = '',
+    $pre_existing_external_network_on   = '',
+    $external_epg                       = '',
 ){
     include 'apic::params'
     include 'apic::api'
+
+    if ($ext_net_enable == true) {
+        $apic_external_network = $ext_net_name
+    }
 
     case $role {
         /controller/: {
@@ -76,17 +88,25 @@ class cisco_aci::gbp_and_apic_ml2 (
     }
 
     class {'neutron::config_apic':
-        apic_hosts        => $apic_hosts,
-        apic_username     => $apic_username,
-        apic_password     => $apic_password,
-        static_config     => $static_config,
-        additional_config => $additional_config,
-        ext_net_enable    => $ext_net_enable,
-        ext_net_name      => $ext_net_name,
-        ext_net_switch    => $ext_net_switch,
-        ext_net_port      => $ext_net_port,
-        ext_net_subnet    => $ext_net_subnet,
-        ext_net_gateway   => $ext_net_gateway,
+        apic_system_id                     => $apic_system_id,
+        apic_hosts                         => $apic_hosts,
+        apic_username                      => $apic_username,
+        apic_password                      => $apic_password,
+        static_config                      => $static_config,
+        additional_config                  => $additional_config,
+        ext_net_enable                     => $ext_net_enable,
+        ext_net_name                       => $apic_external_network,
+        ext_net_switch                     => $ext_net_switch,
+        ext_net_port                       => $ext_net_port,
+        ext_net_subnet                     => $ext_net_subnet,
+        ext_net_gateway                    => $ext_net_gateway,
+        ext_net_config                     => $ext_net_config,
+        pre_existing_vpc                   => $pre_existing_vpc,
+        pre_existing_l3_context            => $pre_existing_l3_context,
+        shared_context_name                => $shared_context_name,
+        apic_external_network              => $apic_external_network,
+        pre_existing_external_network_on   => $pre_existing_external_network_on,
+        external_epg                       => $external_epg,
     }
 
 }
