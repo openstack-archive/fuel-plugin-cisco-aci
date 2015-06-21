@@ -35,7 +35,9 @@ class cisco_aci::gbp_and_apic_gbp (
     include 'apic::api'
 
     if ($ext_net_enable == true) {
-        $apic_external_network = $ext_net_name
+        $apic_net_name = $ext_net_name
+    }else{
+        $apic_net_name = $apic_external_network
     }
 
     case $role {
@@ -104,7 +106,7 @@ class cisco_aci::gbp_and_apic_gbp (
         pre_existing_vpc                   => $pre_existing_vpc,
         pre_existing_l3_context            => $pre_existing_l3_context,
         shared_context_name                => $shared_context_name,
-        apic_external_network              => $apic_external_network,
+        apic_external_network              => $apic_net_name,
         pre_existing_external_network_on   => $pre_existing_external_network_on,
         external_epg                       => $external_epg,
     }
