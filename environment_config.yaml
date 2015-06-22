@@ -138,9 +138,9 @@ attributes:
   apic_system_id:
     type: "text"
     weight: 58
-    value: "openstack1,apic_stack2"
+    value: "openstack1"
     label: "OpenStack system ID:"
-    description: "Commaseparated list of values"
+    description: "OpenStack ID to be used by APIC"
     restrictions:
         - condition: "settings:cisco_aci.use_apic.value == false"
           action: hide
