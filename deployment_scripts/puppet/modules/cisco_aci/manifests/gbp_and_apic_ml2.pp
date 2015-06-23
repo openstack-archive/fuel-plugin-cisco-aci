@@ -75,7 +75,12 @@ class cisco_aci::gbp_and_apic_ml2 (
     if $use_lldp {
         include 'lldp'
         include 'apic::host_agent'
-
+    }else {
+        class {'apic::host_agent':
+            package_ensure   => 'present',
+            enabled          => false,
+            manage_service   => false,
+        }
     }
 
     class {'gbp::config':

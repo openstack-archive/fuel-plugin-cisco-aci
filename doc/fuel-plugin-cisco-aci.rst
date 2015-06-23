@@ -55,15 +55,15 @@ This case will provide availability to configure Neutron for using Cisco SDN sol
 
 This list describes what software and configuration should be added to corresponding hosts to support User Story 1 with autodiscovery feature enabled(checkbox called “Use lldp” set):
 
-* All hosts will be installed with LLDP package
-* All hosts will be installed with pip apicapi package
-* All hosts will be installed with neutron-driver-apic-agent package
+* All hosts will be installed with lldpd package
+* All hosts will be installed with python-apicapi package
+* All hosts will be installed with neutron-ml2-driver-apic package
 * All hosts will have these configurations in *<neutron.conf>*:
 
   ::
 
     [DEFAULT]
-    service_plugins=neutron.services.l3_router.l3_apic.ApicL3ServicePlugin
+    service_plugins=cisco_apic_l3
     core_plugin=neutron.plugins.ml2.plugin.Ml2Plugin
 
 * All hosts will have these configurations in *ml2_conf.ini* file:
@@ -73,7 +73,7 @@ This list describes what software and configuration should be added to correspon
     [ml2]
     type_drivers=local,flat,vlan,gre,vxlan
     tenant_network_types=vlan
-    mechanism_drivers=openvswitch,cisco_apic
+    mechanism_drivers=openvswitch,cisco_apic_ml2
     [ml2_type_vlan]
     network_vlan_ranges="$physnets_dev:$vlan_range"
     [securitygroup]
@@ -104,13 +104,12 @@ Where **$integration_bridge** , **$physnets_dev**, **$vlan_range** should be con
 
 Where **$apic_hosts**, **$apic_username**, **$apic_password** - should be configured through the Fuel web UI.
 
-* All controllers will have neutron-driver-apic-svc-agent package installed
 * All hosts *ml2_config_cisco.ini* will have [apic_external_network:ext] section, if configured through the Fuel web UI.
 
 This list describes what software and configuration should be added to the corresponding hosts to support User Story 1 with static config chosen:
 
-* All controllers have pip apicapi installed
-* neutron-driver-apic-svc-agent neutron-driver-apic-agent and lldp is not installed
+* All controllers have python-apicapi package installed
+* lldpd package is not installed
 * All configurations are the same as "Auto discovery" way
 * On all hosts in *ml2_config_cisco.ini* file, we will add an example (user-defined) section configured through the Fuel web UI.
 
@@ -215,10 +214,12 @@ This list describes what software and configuration should be added to the corre
   ::
 
     [DEFAULT]
-    service_plugins=neutron.services.l3_router.l3_apic.ApicL3ServicePlugin
+    service_plugins=cisco_apic_l3,
+    gbpservice.neutron.services.grouppolicy.plugin.GroupPolicyPlugin,
+    gbpservice.neutron.services.servicechain.servicechain_plugin.ServiceChainPlugin
     core_plugin=neutron.plugins.ml2.plugin.Ml2Plugin
     [group_policy]
-    policy_drivers=implicit_policy,apic
+    policy_drivers=implicit_policy,resource_mapping
     [servicechain]
     servicechain_drivers = simplechain_driver
     [quotas]
@@ -238,7 +239,7 @@ This list describes what software and configuration should be added to the corre
     [ml2]
     type_drivers=local,flat,vlan,gre,vxlan
     tenant_network_types=vlan
-    mechanism_drivers=openvswitch,cisco_aci
+    mechanism_drivers=openvswitch,cisco_apic_ml2
     [ml2_type_vlan]
     network_vlan_ranges="$physnets_dev:$vlan_range"
     [securitygroup]
@@ -299,7 +300,9 @@ Where **$admin_username**, **$admin_password** and **$admin_tenant** point to th
 
 * All hosts will have [apic_external_network:ext] section in the *ml2_config_cisco.ini* file, if configured though Fuel web UI.
 
-* All controllers have pip apicapi installed
+* All hosts have python-apicapi package installed
+
+* All hosts have neutron-ml2-driver-apic package installed
 
 * If LLDP is using - see US1 for configuration options that should be added.
 
@@ -402,7 +405,7 @@ Where **$admin_username**, **$admin_password** and **$admin_tenant** point to th
 
 * All hosts will have [apic_external_network:ext] section in the *ml2_config_cisco.ini* file, if configured though Fuel web UI.
 
-* All controllers have pip apicapi installed
+* All controllers have python-apicapi package installed
 
 * If LLDP is using - see US1 for configuration options that should be added.
 
@@ -463,7 +466,7 @@ Implementation
 Assignee(s)
 -----------
 Primary assignee:
-    Nikita Koshikov - nkoshikov@mirantis.com
+    Sergey Levchenko - slevchenko@mirantis.com
 
 Work Items
 ----------
@@ -492,6 +495,12 @@ Documentation Impact
 ====================
 
 Reference to this plugin should be added to main Fuel documentation.
+
+Known issues
+====================
+
+1. UI option "Configure external network" is not working in current version and must not be used untill fix comes out.
+2. In current plugin version once checkbox "Apic Driver" is checked out, it can't be unchecked unless pressing "Load defaults" button, unlike "Group Based Policy" button which can be unchecked. In order to load defaults, please scroll to the bottom of "Settings" page and click "Load defaults" button.
 
 References
 ==========
