@@ -207,6 +207,7 @@ correctly configured.")
     loop do
       begin
         withenv authenv do
+          args = args.join(" ")
           rv = keystone(args)
         end
         break
@@ -244,8 +245,10 @@ correctly configured.")
 
   def self.get_tenant_id(catalog, name)
     rv = nil
-    auth_keystone('tenant-list').each do |line|
-      fields=line.split(/\s*\|\s*/)
+#    auth_keystone('tenant-list').each do |line|
+#      fields=line.split(/\s*\|\s*/)
+    fields = auth_keystone('tenant-list').split(/\s*\|\s*/)
+      fields.each do |line|
       if fields[1] and fields[1].size == 32
         if fields[2] == name
           rv = fields[1]
