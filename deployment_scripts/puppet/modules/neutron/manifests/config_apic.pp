@@ -39,8 +39,10 @@ class neutron::config_apic (
         }
     }
 
-    if ($ext_net_config == false) {
+    if ($ext_net_enable == false) {
         $apic_ext_net = $apic_external_network
+    }else {
+        $apic_ext_net = $ext_net_name
     }
 
     if ($pre_existing_vpc == true) {
@@ -75,10 +77,10 @@ class neutron::config_apic (
 
     if ($ext_net_enable == true){
         neutron_plugin_ml2_cisco {
-            "apic_external_network:${ext_net_name}/switch":       value => $ext_net_switch;
-            "apic_external_network:${ext_net_name}/port":         value => $ext_net_port;
-            "apic_external_network:${ext_net_name}/cidr_exposed": value => $ext_net_subnet;
-            "apic_external_network:${ext_net_name}/gateway_ip":   value => $ext_net_gateway;
+            "apic_external_network:${apic_ext_net}/switch":       value => $ext_net_switch;
+            "apic_external_network:${apic_ext_net}/port":         value => $ext_net_port;
+            "apic_external_network:${apic_ext_net}/cidr_exposed": value => $ext_net_subnet;
+            "apic_external_network:${apic_ext_net}/gateway_ip":   value => $ext_net_gateway;
 
         }
     }

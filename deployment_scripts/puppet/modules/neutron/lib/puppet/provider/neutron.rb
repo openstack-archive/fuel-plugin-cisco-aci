@@ -249,9 +249,9 @@ correctly configured.")
 #      fields=line.split(/\s*\|\s*/)
     fields = auth_keystone('tenant-list').split(/\s*\|\s*/)
       fields.each do |line|
-      if fields[1] and fields[1].size == 32
-        if fields[2] == name
-          rv = fields[1]
+      if fields[5] and fields[5].size == 32
+        if fields[6] == name
+          rv = fields[5]
           break
         end
       end

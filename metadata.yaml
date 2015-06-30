@@ -3,7 +3,7 @@ name: cisco_aci
 # Human-readable name for your plugin
 title: Cisco APIC Plugin
 # Plugin version
-version: 1.0.25
+version: 1.0.27
 # Description
 description: Enable to use Cisco SDN solutions for Neutron
 # Required fuel version

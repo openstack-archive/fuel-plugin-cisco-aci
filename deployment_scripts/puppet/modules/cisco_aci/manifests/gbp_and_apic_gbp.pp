@@ -97,7 +97,7 @@ class cisco_aci::gbp_and_apic_gbp (
         static_config                      => $static_config,
         additional_config                  => $additional_config,
         ext_net_enable                     => $ext_net_enable,
-        ext_net_name                       => $apic_external_network,
+        ext_net_name                       => $apic_net_name,
         ext_net_switch                     => $ext_net_switch,
         ext_net_port                       => $ext_net_port,
         ext_net_subnet                     => $ext_net_subnet,
