@@ -499,8 +499,7 @@ Reference to this plugin should be added to main Fuel documentation.
 Known issues
 ====================
 
-1. UI option "Configure external network" is not working in current version and must not be used untill fix comes out.
-2. In current plugin version once checkbox "Apic Driver" is checked out, it can't be unchecked unless pressing "Load defaults" button, unlike "Group Based Policy" button which can be unchecked. In order to load defaults, please scroll to the bottom of "Settings" page and click "Load defaults" button.
+In current plugin version once checkbox "Apic Driver" is checked out, it can't be unchecked unless pressing "Load defaults" button, unlike "Group Based Policy" button which can be unchecked. In order to load defaults, please scroll to the bottom of "Settings" page and click "Load defaults" button.
 
 References
 ==========

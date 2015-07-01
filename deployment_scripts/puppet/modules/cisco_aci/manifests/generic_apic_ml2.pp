@@ -46,6 +46,11 @@ class cisco_aci::generic_apic_ml2 (
         /controller/: {
             if $use_lldp {
                 include 'apic::svc_agent'
+            }else {
+                package { 'apic_ml2_package':
+                    ensure => 'present',
+                    name   => $::apic::params::package_neutron_ml2_driver_apic,
+                }
             }
             include 'neutron::services::apic_server'
             include "neutron::services::${ha_prefix}agents"
