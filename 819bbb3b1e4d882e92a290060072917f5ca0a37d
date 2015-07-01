@@ -1,0 +1,9 @@
+Verified+2: Jenkins
+Code-Review+2: Sergey Levchenko <slevchenko@mirantis.com>
+Workflow+1: Sergey Levchenko <slevchenko@mirantis.com>
+Code-Review+1: Mykola Grygoriev <mgrygoriev@mirantis.com>
+Submitted-by: Jenkins
+Submitted-at: Wed, 01 Jul 2015 10:09:11 +0000
+Reviewed-on: https://review.openstack.org/197496
+Project: stackforge/fuel-plugin-cisco-aci
+Branch: refs/heads/verizon_merge
