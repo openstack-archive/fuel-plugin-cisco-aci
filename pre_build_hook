@@ -10,4 +10,4 @@ DEB_REPO="${ROOT}"/repositories/ubuntu/
 
 wget -qO- "${REPO_PATH}" | \
     tar -C "${MODULES}" --strip-components=3 -zxvf - \
-    stackforge-fuel-library-a478b8c/deployment/puppet/{inifile,stdlib,pacemaker}
+    openstack-fuel-library-a478b8c/deployment/puppet/{inifile,stdlib,pacemaker}
