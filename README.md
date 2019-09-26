@@ -1,4 +1,3 @@
-# fuel-plugin-cisco-aci
-Fuel Plugin for Cisco ACI
+# This repo has moved to OpenDev
 
-Full specification can be found at https://github.com/stackforge/fuel-plugin-cisco-aci/blob/master/doc/fuel-plugin-cisco-aci.rst
+It can now be found at [https://opendev.org/x/fuel-plugin-cisco-aci](https://opendev.org/x/fuel-plugin-cisco-aci)
